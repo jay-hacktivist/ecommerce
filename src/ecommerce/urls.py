@@ -18,9 +18,20 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from .views import home_page, about_page, contact_page, login_page, register_page
+from .views import (
+    home_page, 
+    about_page, 
+    contact_page,
+    login_page, 
+    register_page)
 
-from products.views import ProductListView, product_list_view, ProductDetailView, product_detail_view
+from products.views import (
+    ProductListView,
+    product_list_view,
+    ProductDetailView,
+    product_detail_view,
+    ProductFeaturedListView,
+    ProductFeaturedDetailView)
 
 urlpatterns = [
     path('', home_page, name="homepage"),
@@ -28,13 +39,17 @@ urlpatterns = [
     path('contact/', contact_page, name="contact"),
     path('login/', login_page, name="login"),
     path('register/', register_page, name="register"),
+    path('featured/', ProductFeaturedListView.as_view(), name="featured"),
+    path('featured/<int:pk>/', ProductFeaturedDetailView.as_view(), name="featured-detail"),
     path('products/', ProductListView.as_view(), name="products"),
     path('products-fbv/', product_list_view, name="products-fbv"),
-    path('products/<int:pk>/', ProductDetailView.as_view(), name="detail"),
-    path('products-fbv/<int:pk>/', product_detail_view, name="detail-fbv"),
+    path('products/<int:pk>/', ProductDetailView.as_view(), name="products-detail"),
+    path('products-fbv/<int:pk>/', product_detail_view, name="products-detail-fbv"),
     path('admin/', admin.site.urls),
 ]
 
 if settings.DEBUG:
-    urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns = urlpatterns + \
+        static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns = urlpatterns + \
+        static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
